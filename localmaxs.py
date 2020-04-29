@@ -33,8 +33,8 @@ def F_rec_dice(ngram, i=1):
 def F_rec_scp(ngram, i=1):
     # shouldnt get larger than length
     if i >= len(ngram) - 1:
-        return prob(ngram[:i]) + prob(ngram[i:])
-    return prob(ngram[:i]) + prob(ngram[i:]) + F_rec_scp(ngram, i+1)
+        return prob(ngram[:i]) * prob(ngram[i:])
+    return prob(ngram[:i]) * prob(ngram[i:]) + F_rec_scp(ngram, i+1)
 
 # F factor for ngrams n>2 from the slides
 def F_dice(ngram):
