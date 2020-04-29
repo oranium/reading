@@ -24,7 +24,7 @@ def prob(ngram):
 def F_rec_dice(ngram, i=1):
     # shouldnt get larger than length
     #print(f'F_rec called for {ngram[:i]}, {ngram[i:]}')
-    if i >= len(ngram)-1:
+    if i >= len(ngram) - 1:
         #print('calling freq')
         return freq(ngram[:i]) + freq(ngram[i:])
     return freq(ngram[:i]) + freq(ngram[i:]) + F_rec_dice(ngram, i+1)
@@ -32,7 +32,7 @@ def F_rec_dice(ngram, i=1):
 # Needs to be averaged by the caller! (divide by 1/len_ngram -1)
 def F_rec_scp(ngram, i=1):
     # shouldnt get larger than length
-    if i >= len(ngram)-1:
+    if i >= len(ngram) - 1:
         return prob(ngram[:i]) + prob(ngram[i:])
     return prob(ngram[:i]) + prob(ngram[i:]) + F_rec_scp(ngram, i+1)
 
@@ -50,7 +50,7 @@ def _avq(ngram, i=1):
     # shouldn't get larger than length
     if i >= len(ngram) - 1:
         return freq(ngram[:i]) * freq(ngram[i:])
-    return freq(ngram[:i]) * freq(ngram[i:]) * _avq(ngram, i+1)
+    return freq(ngram[:i]) * freq(ngram[i:]) + _avq(ngram, i+1)
 
 
 # Needs to be averaged by the caller! (divide by 1/len_ngram -1)
@@ -71,7 +71,7 @@ def dice(ngram):
 def scp(ngram):
     if len(ngram) == 2:
         return prob(ngram) ** 2 / prob(ngram[0]) * prob(ngram[1])
-    F_scp = (1 / (len(ngram) - 1) * F_rec_scp(ngram))
+    F_scp = (1 / (len(ngram) - 1)) * F_rec_scp(ngram)
     return prob(ngram) ** 2 / F_scp
 
 def phi_squared(ngram):
@@ -125,8 +125,9 @@ for n in range(3,8):
         glue_scp = glue(words[idx:idx+n], scp) 
         glue_dice = glue(words[idx:idx+n], dice) 
         glue_phi = glue(words[idx:idx+n], phi_squared)
-
-        if glue_scp > 1 or glue_dice > 1 or (0>glue_phi>1 and not glue_scp == 1):
+        if idx %100 == 0:
+            print(f'scp {glue_scp}\ndice {glue_dice}\nphi {glue_phi}\n')
+        if glue_scp > 1 or glue_dice > 1 or 0>glue_phi>1:
             print('That was a mistake') 
             print(f'{words[idx:idx+n]}') 
             print(glue_dice, glue_scp, glue_phi) 
