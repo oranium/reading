@@ -9,10 +9,10 @@ def freq(ngram):
     # so the letters of 1-grams dont get counted individually
     ngram = ngram if type(ngram) is list else [ngram]
     n = len(ngram)
-    print(ngram)
+    print("ngram:",ngram)
     _freq = sum(1 for i in range(N) if words[i:i+n] == ngram )
-    print(_freq)
-    return sum(1 for i in range(N) if words[i:i+n] == ngram )
+    print("freq",_freq)
+    return _freq
 
 # the probability of the ngram in our corpus
 def prob(ngram):
@@ -105,4 +105,12 @@ words_ngrams = [words, [words[i:i+2] for i in range(N)],
                 [words[i:i+5] for i in range(N)],[words[i:i+6] for i in range(N)],
                 [words[i:i+7] for i in range(N)]]
 
-print(glue(words_ngrams[1][2], dice))
+# for i in range (3):
+#     for j in range (3 ):
+#         print("Dice",glue(words_ngrams[i][j], dice))
+#         print(words_ngrams[i][j])
+
+print("Dice",glue(words_ngrams[2][0], dice))
+print("scp",glue(words_ngrams[3][0], scp))
+#print("phi_squared",glue(words_ngrams[3][0], phi_squared))
+print(words_ngrams[3][0])
